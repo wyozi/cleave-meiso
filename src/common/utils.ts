@@ -1,8 +1,8 @@
 import type {
-  StripDelimitersProps,
-  GetFormattedValueProps,
   BlocksType,
   DelimiterType,
+  GetFormattedValueProps,
+  StripDelimitersProps,
 } from './types'
 
 // const test = (): string => {
@@ -21,9 +21,16 @@ export const getMaxLength = (blocks: BlocksType): number =>
 export const headStr = (str: string, length: number): string =>
   str.slice(0, length)
 
+/**
+ * create a regexp that matches given delimiter
+ * escapes the delimiter if it's a special character
+ */
 export const getDelimiterRegexByDelimiter = (delimiter: string): RegExp =>
   new RegExp(delimiter.replace(/([.?*+^$[\]\\(){}|-])/g, '\\$1'), 'g')
 
+/**
+ * strips all delimiters from the value
+ */
 export const stripDelimiters = ({
   value,
   delimiters,

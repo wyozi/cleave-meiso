@@ -1,16 +1,14 @@
 {
-  "name": "cleave-zen",
-  "title": "cleave-zen",
-  "description": "WIP",
-  "version": "0.0.17",
-  "author": "Max Huang <risonhuang@gmail.com>",
-  "license": "MIT",
+  "name": "@wyozi/cleave-zen",
   "type": "module",
+  "version": "0.0.18",
+  "author": "wyozi (orig: Max Huang <risonhuang@gmail.com>)",
+  "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/nosir/cleave-zen.git"
+    "url": "https://github.com/wyozi/cleave-zen.git"
   },
-  "homepage": "https://github.com/nosir/cleave-zen",
+  "homepage": "https://github.com/wyozi/cleave-zen",
   "files": [
     "dist"
   ],
@@ -22,13 +20,14 @@
       "require": "./dist/cleave-zen.cjs"
     }
   },
-  "main": "./dist/cleave-zen.js",
+  "main": "./dist/cleave-zen.cjs",
   "module": "./dist/cleave-zen.module.js",
   "unpkg": "./dist/cleave-zen.umd.js",
   "types": "dist/index.d.ts",
   "scripts": {
     "docs": "typedoc --out docs ./src && rm ./docs/README.md",
-    "build": "pnpm docs && rm -rf ./dist/ && microbundle",
+    "build": "pnpm docs && pnpm build:bundle",
+    "build:bundle": "rm -rf ./dist/ && microbundle",
     "dev": "microbundle watch"
   },
   "devDependencies": {

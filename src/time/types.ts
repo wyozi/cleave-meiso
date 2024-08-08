@@ -7,6 +7,7 @@ export type TimeFormatType = '12' | '24'
 export interface FormatTimeOptions {
   delimiterLazyShow?: boolean
   delimiter?: DelimiterType
+  delimiters?: DelimiterType[]
   timePattern?: TimePatternType
   timeFormat?: TimeFormatType
 }
