@@ -28,7 +28,7 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "docs": "typedoc --out docs ./src && rm ./docs/README.md",
-    "build": "yarn docs && rm -rf ./dist/ && microbundle",
+    "build": "pnpm docs && rm -rf ./dist/ && microbundle",
     "dev": "microbundle watch"
   },
   "devDependencies": {
