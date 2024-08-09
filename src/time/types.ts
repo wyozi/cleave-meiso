@@ -1,6 +1,6 @@
 import type { BlocksType, DelimiterType } from '../common/types'
 
-export type TimeUnit = 'h' | 'm' | 's'
+export type TimeUnit = 'h' | 'm' | 's' | 'x' | 'xx' | 'xxx'
 export type TimePatternType = TimeUnit[]
 export type TimeFormatType = '12' | '24'
 

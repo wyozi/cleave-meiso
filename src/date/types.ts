@@ -6,17 +6,11 @@ export type DatePatternType = DateUnit[]
 export interface FormatDateOptions {
   delimiterLazyShow?: boolean
   delimiter?: DelimiterType
+  delimiters?: DelimiterType[]
   datePattern?: DatePatternType
-  dateMin?: string
-  dateMax?: string
 }
 
-export interface InitDateRangeResults {
-  min: number[]
-  max: number[]
-}
-
-export interface DateCalculateOptions extends InitDateRangeResults {
+export interface DateCalculateOptions {
   date?: number[]
   value?: string
   blocks?: BlocksType

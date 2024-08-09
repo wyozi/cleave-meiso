@@ -1,7 +1,7 @@
 {
   "name": "cleave-meiso",
   "type": "module",
-  "version": "0.0.18",
+  "version": "0.0.19",
   "author": "wyozi (orig: Max Huang <risonhuang@gmail.com>)",
   "license": "MIT",
   "repository": {
@@ -28,11 +28,14 @@
     "docs": "typedoc --out docs ./src && rm ./docs/README.md",
     "build": "pnpm docs && pnpm build:bundle",
     "build:bundle": "rm -rf ./dist/ && microbundle",
-    "dev": "microbundle watch"
+    "dev": "microbundle watch",
+    "kitchensink:build": "esbuild kitchensink/kitchensink.tsx --bundle --outfile=kitchensink/app.js",
+    "kitchensink:serve": "esbuild kitchensink/kitchensink.tsx --bundle --outfile=kitchensink/app.js --servedir=kitchensink --serve"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^6.4.0",
     "@typescript-eslint/parser": "^6.10.0",
+    "esbuild": "^0.23.0",
     "eslint": "^8.0.1",
     "eslint-config-standard-with-typescript": "^39.1.1",
     "eslint-plugin-import": "^2.25.2",
@@ -40,6 +43,8 @@
     "eslint-plugin-promise": "^6.0.0",
     "microbundle": "^0.15.1",
     "prettier": "^3.1.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "typedoc": "^0.25.3",
     "typedoc-plugin-markdown": "^3.17.1",
     "typescript": "5.2.2"

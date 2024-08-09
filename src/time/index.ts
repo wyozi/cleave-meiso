@@ -39,13 +39,8 @@ const getTimeFormatOptions = (
   }
 }
 
-const getBlocksByTimePattern = (timePattern: TimePatternType): BlocksType => {
-  const blocks: BlocksType = []
-  timePattern.forEach(() => {
-    blocks.push(2)
-  })
-  return blocks
-}
+const getBlocksByTimePattern = (timePattern: TimePatternType): BlocksType =>
+  timePattern.map(item => (item.includes('x') ? item.length : 2))
 
 const getValidatedTime = ({
   value,
