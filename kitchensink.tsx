@@ -10,6 +10,7 @@ import {
 } from '../src/index'
 
 function useCleaveExample(
+  placeholder: string,
   delimiters: string[],
   callback: (value: string) => string
 ) {
@@ -25,9 +26,10 @@ function useCleaveExample(
 
   return (
     <input
-      className="border"
+      className="border p-1"
       ref={inputRef}
       value={value}
+      placeholder={placeholder}
       onChange={e => {
         const value = e.target.value
         setValue(callback(value))
@@ -49,7 +51,7 @@ function CreditCard() {
   }, [])
 
   return (
-    <>
+    <ExampleBlock title="credit card" code={`formatCreditCard(value)`}>
       <input
         className="border"
         ref={inputRef}
@@ -62,18 +64,18 @@ function CreditCard() {
       />
       <div>value: {value}</div>
       <div>type: {type}</div>
-    </>
+    </ExampleBlock>
   )
 }
 
 function DateFormatting() {
-  const date = useCleaveExample(['-'], value =>
+  const date = useCleaveExample('2024-08-11', ['-'], value =>
     formatDate(value, {
       delimiter: '-',
       datePattern: ['Y', 'm', 'd'],
     })
   )
-  const monthYear = useCleaveExample(['/'], value =>
+  const monthYear = useCleaveExample('08/24', ['/'], value =>
     formatDate(value, {
       datePattern: ['m', 'y'],
     })
@@ -81,19 +83,34 @@ function DateFormatting() {
 
   return (
     <>
-      <ExampleBlock>{date}</ExampleBlock>
-      <ExampleBlock>{monthYear}</ExampleBlock>
+      <ExampleBlock
+        title="date"
+        code={`formatDate(value, {
+  delimiter: '-',
+  datePattern: ['Y', 'm', 'd'],
+})`}
+      >
+        {date}
+      </ExampleBlock>
+      <ExampleBlock
+        title="month year"
+        code={`formatDate(value, {
+  datePattern: ['m', 'y'],
+})`}
+      >
+        {monthYear}
+      </ExampleBlock>
     </>
   )
 }
 
 function TimeFormatting() {
-  const hms = useCleaveExample([':'], value =>
+  const hms = useCleaveExample('12:05:02', [':'], value =>
     formatTime(value, {
       timePattern: ['h', 'm', 's'],
     })
   )
-  const hm = useCleaveExample([':'], value =>
+  const hm = useCleaveExample('16:04', [':'], value =>
     formatTime(value, {
       timePattern: ['h', 'm'],
     })
@@ -101,70 +118,116 @@ function TimeFormatting() {
 
   return (
     <>
-      <ExampleBlock>{hms}</ExampleBlock>
-      <ExampleBlock>{hm}</ExampleBlock>
+      <ExampleBlock
+        code={`formatTime(value, {
+  timePattern: ['h', 'm', 's'],
+})`}
+      >
+        {hms}
+      </ExampleBlock>
+      <ExampleBlock
+        code={`formatTime(value, {
+  timePattern: ['h', 'm'],
+})`}
+      >
+        {hm}
+      </ExampleBlock>
     </>
   )
 }
 
 function TimeRange() {
-  const ex = useCleaveExample([':', ' — '], value =>
+  const ex = useCleaveExample('08:00 — 16:00', [':', ' — '], value =>
     formatTime(value, {
       delimiters: [':', ' — ', ':'],
       timePattern: ['h', 'm', 'h', 'm'],
     })
   )
 
-  return ex
+  return (
+    <ExampleBlock
+      title="time range"
+      code={`formatTime(value, {
+  delimiters: [':', ' — ', ':'],
+  timePattern: ['h', 'm', 'h', 'm'],
+})`}
+    >
+      {ex}
+    </ExampleBlock>
+  )
 }
 
 function Duration() {
-  const ex = useCleaveExample(['h'], value =>
+  const ex = useCleaveExample('08h45', ['h'], value =>
     formatTime(value, {
       delimiters: ['h'],
       timePattern: ['xx', 'm'],
     })
   )
 
-  return ex
+  return (
+    <ExampleBlock
+      title="duration"
+      code={`formatTime(value, {
+  delimiters: ['h'],
+  timePattern: ['xx', 'm'],
+})`}
+    >
+      {ex}
+    </ExampleBlock>
+  )
 }
 
 function DateRange() {
-  const ex = useCleaveExample(['.', ' — '], value =>
+  const ex = useCleaveExample('01.03.2024 — 14.08.2024', ['.', ' — '], value =>
     formatDate(value, {
       delimiters: ['.', '.', ' — ', '.', '.'],
       datePattern: ['d', 'm', 'Y', 'd', 'm', 'Y'],
     })
   )
 
-  return ex
+  return (
+    <ExampleBlock
+      title="date range"
+      code={`formatDate(value, {
+  delimiters: ['.', '.', ' — ', '.', '.'],
+  datePattern: ['d', 'm', 'Y', 'd', 'm', 'Y'],
+})`}
+    >
+      {ex}
+    </ExampleBlock>
+  )
 }
 
-function ExampleBlock({ children }: { children: React.ReactNode }) {
+function ExampleBlock({
+  title,
+  code,
+  children,
+}: {
+  title: string
+  code: string
+  children: React.ReactNode
+}) {
   return (
-    <div className="flex flex-col items-center justify-center border-2 border-black">
-      {children}
+    <div className="flex flex-col items-center justify-between p-4 border-2 border-black">
+      <h2 className="font-semibold mb-4 text-lg">{title}</h2>
+      <div>{children}</div>
+      <div className="bg-black whitespace-pre text-white font-mono mt-8 rounded p-1">
+        {code}
+      </div>
     </div>
   )
 }
 
 function App() {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 grid-rows-2 h-screen">
-      <ExampleBlock>
-        <CreditCard />
-      </ExampleBlock>
+    <div className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4">
+      <CreditCard />
       <DateFormatting />
       <TimeFormatting />
-      <ExampleBlock>
-        <TimeRange />
-      </ExampleBlock>
-      <ExampleBlock>
-        <Duration />
-      </ExampleBlock>
-      <ExampleBlock>
-        <DateRange />
-      </ExampleBlock>
+      <TimeRange />
+      <Duration />
+      <DateRange />
     </div>
   )
 }

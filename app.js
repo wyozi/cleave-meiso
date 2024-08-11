@@ -23948,7 +23948,7 @@
   };
 
   // kitchensink/kitchensink.tsx
-  function useCleaveExample(delimiters, callback) {
+  function useCleaveExample(placeholder, delimiters, callback) {
     const inputRef = React.useRef(null);
     const [value, setValue] = React.useState("");
     React.useEffect(() => {
@@ -23960,9 +23960,10 @@
     return /* @__PURE__ */ React.createElement(
       "input",
       {
-        className: "border",
+        className: "border p-1",
         ref: inputRef,
         value,
+        placeholder,
         onChange: (e) => {
           const value2 = e.target.value;
           setValue(callback(value2));
@@ -23980,7 +23981,7 @@
         delimiter: DefaultCreditCardDelimiter
       });
     }, []);
-    return /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement(
+    return /* @__PURE__ */ React.createElement(ExampleBlock, { title: "credit card", code: `formatCreditCard(value)` }, /* @__PURE__ */ React.createElement(
       "input",
       {
         className: "border",
@@ -23996,6 +23997,7 @@
   }
   function DateFormatting() {
     const date = useCleaveExample(
+      "2024-08-11",
       ["-"],
       (value) => formatDate(value, {
         delimiter: "-",
@@ -24003,63 +24005,138 @@
       })
     );
     const monthYear = useCleaveExample(
+      "08/24",
       ["/"],
       (value) => formatDate(value, {
         datePattern: ["m", "y"]
       })
     );
-    return /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement(ExampleBlock, null, date), /* @__PURE__ */ React.createElement(ExampleBlock, null, monthYear));
+    return /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement(
+      ExampleBlock,
+      {
+        title: "date",
+        code: `formatDate(value, {
+  delimiter: '-',
+  datePattern: ['Y', 'm', 'd'],
+})`
+      },
+      date
+    ), /* @__PURE__ */ React.createElement(
+      ExampleBlock,
+      {
+        title: "month year",
+        code: `formatDate(value, {
+  datePattern: ['m', 'y'],
+})`
+      },
+      monthYear
+    ));
   }
   function TimeFormatting() {
     const hms = useCleaveExample(
+      "12:05:02",
       [":"],
       (value) => formatTime(value, {
         timePattern: ["h", "m", "s"]
       })
     );
     const hm = useCleaveExample(
+      "16:04",
       [":"],
       (value) => formatTime(value, {
         timePattern: ["h", "m"]
       })
     );
-    return /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement(ExampleBlock, null, hms), /* @__PURE__ */ React.createElement(ExampleBlock, null, hm));
+    return /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement(
+      ExampleBlock,
+      {
+        code: `formatTime(value, {
+  timePattern: ['h', 'm', 's'],
+})`
+      },
+      hms
+    ), /* @__PURE__ */ React.createElement(
+      ExampleBlock,
+      {
+        code: `formatTime(value, {
+  timePattern: ['h', 'm'],
+})`
+      },
+      hm
+    ));
   }
   function TimeRange() {
     const ex = useCleaveExample(
+      "08:00 \u2014 16:00",
       [":", " \u2014 "],
       (value) => formatTime(value, {
         delimiters: [":", " \u2014 ", ":"],
         timePattern: ["h", "m", "h", "m"]
       })
     );
-    return ex;
+    return /* @__PURE__ */ React.createElement(
+      ExampleBlock,
+      {
+        title: "time range",
+        code: `formatTime(value, {
+  delimiters: [':', ' \u2014 ', ':'],
+  timePattern: ['h', 'm', 'h', 'm'],
+})`
+      },
+      ex
+    );
   }
   function Duration() {
     const ex = useCleaveExample(
+      "08h45",
       ["h"],
       (value) => formatTime(value, {
         delimiters: ["h"],
         timePattern: ["xx", "m"]
       })
     );
-    return ex;
+    return /* @__PURE__ */ React.createElement(
+      ExampleBlock,
+      {
+        title: "duration",
+        code: `formatTime(value, {
+  delimiters: ['h'],
+  timePattern: ['xx', 'm'],
+})`
+      },
+      ex
+    );
   }
   function DateRange() {
     const ex = useCleaveExample(
+      "01.03.2024 \u2014 14.08.2024",
       [".", " \u2014 "],
       (value) => formatDate(value, {
         delimiters: [".", ".", " \u2014 ", ".", "."],
         datePattern: ["d", "m", "Y", "d", "m", "Y"]
       })
     );
-    return ex;
+    return /* @__PURE__ */ React.createElement(
+      ExampleBlock,
+      {
+        title: "date range",
+        code: `formatDate(value, {
+  delimiters: ['.', '.', ' \u2014 ', '.', '.'],
+  datePattern: ['d', 'm', 'Y', 'd', 'm', 'Y'],
+})`
+      },
+      ex
+    );
   }
-  function ExampleBlock({ children }) {
-    return /* @__PURE__ */ React.createElement("div", { className: "flex flex-col items-center justify-center border-2 border-black" }, children);
+  function ExampleBlock({
+    title,
+    code,
+    children
+  }) {
+    return /* @__PURE__ */ React.createElement("div", { className: "flex flex-col items-center justify-between p-4 border-2 border-black" }, /* @__PURE__ */ React.createElement("h2", { className: "font-semibold mb-4 text-lg" }, title), /* @__PURE__ */ React.createElement("div", null, children), /* @__PURE__ */ React.createElement("div", { className: "bg-black whitespace-pre text-white font-mono mt-8 rounded p-1" }, code));
   }
   function App() {
-    return /* @__PURE__ */ React.createElement("div", { className: "grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 grid-rows-2 h-screen" }, /* @__PURE__ */ React.createElement(ExampleBlock, null, /* @__PURE__ */ React.createElement(CreditCard, null)), /* @__PURE__ */ React.createElement(DateFormatting, null), /* @__PURE__ */ React.createElement(TimeFormatting, null), /* @__PURE__ */ React.createElement(ExampleBlock, null, /* @__PURE__ */ React.createElement(TimeRange, null)), /* @__PURE__ */ React.createElement(ExampleBlock, null, /* @__PURE__ */ React.createElement(Duration, null)), /* @__PURE__ */ React.createElement(ExampleBlock, null, /* @__PURE__ */ React.createElement(DateRange, null)));
+    return /* @__PURE__ */ React.createElement("div", { className: "grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4" }, /* @__PURE__ */ React.createElement(CreditCard, null), /* @__PURE__ */ React.createElement(DateFormatting, null), /* @__PURE__ */ React.createElement(TimeFormatting, null), /* @__PURE__ */ React.createElement(TimeRange, null), /* @__PURE__ */ React.createElement(Duration, null), /* @__PURE__ */ React.createElement(DateRange, null));
   }
   var domNode = document.getElementById("root");
   var root = (0, import_client.createRoot)(domNode);
