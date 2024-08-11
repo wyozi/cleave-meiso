@@ -137,7 +137,7 @@ function TimeFormatting() {
 }
 
 function TimeRange() {
-  const ex = useCleaveExample('08:00 — 16:00', [':', ' — '], value =>
+  const ex = useCleaveExample('08:00 — 16:00', [':', '—', ' '], value =>
     formatTime(value, {
       delimiters: [':', ' — ', ':'],
       timePattern: ['h', 'm', 'h', 'm'],
@@ -179,11 +179,14 @@ function Duration() {
 }
 
 function DateRange() {
-  const ex = useCleaveExample('01.03.2024 — 14.08.2024', ['.', ' — '], value =>
-    formatDate(value, {
-      delimiters: ['.', '.', ' — ', '.', '.'],
-      datePattern: ['d', 'm', 'Y', 'd', 'm', 'Y'],
-    })
+  const ex = useCleaveExample(
+    '01.03.2024 — 14.08.2024',
+    ['.', '—', ' '],
+    value =>
+      formatDate(value, {
+        delimiters: ['.', '.', ' — ', '.', '.'],
+        datePattern: ['d', 'm', 'Y', 'd', 'm', 'Y'],
+      })
   )
 
   return (

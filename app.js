@@ -24068,7 +24068,7 @@
   function TimeRange() {
     const ex = useCleaveExample(
       "08:00 \u2014 16:00",
-      [":", " \u2014 "],
+      [":", "\u2014", " "],
       (value) => formatTime(value, {
         delimiters: [":", " \u2014 ", ":"],
         timePattern: ["h", "m", "h", "m"]
@@ -24110,7 +24110,7 @@
   function DateRange() {
     const ex = useCleaveExample(
       "01.03.2024 \u2014 14.08.2024",
-      [".", " \u2014 "],
+      [".", "\u2014", " "],
       (value) => formatDate(value, {
         delimiters: [".", ".", " \u2014 ", ".", "."],
         datePattern: ["d", "m", "Y", "d", "m", "Y"]
