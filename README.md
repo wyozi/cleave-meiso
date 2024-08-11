@@ -1,34 +1,28 @@
-# `cleave-zen`
+# `cleave-meiso`
 
-[![npm version](https://badge.fury.io/js/cleave-zen.svg)](https://badge.fury.io/js/cleave-zen)
-[![npm downloads](https://img.shields.io/npm/dm/cleave-zen.svg)](https://www.npmjs.com/package/cleave-zen)
-[![Documents](https://img.shields.io/badge/documents-check-3362c2.svg)](https://github.com/nosir/cleave-zen/blob/main/docs/modules.md)
+[![npm version](https://badge.fury.io/js/cleave-meiso.svg)](https://badge.fury.io/js/cleave-meiso)
+[![npm downloads](https://img.shields.io/npm/dm/cleave-meiso.svg)](https://www.npmjs.com/package/cleave-meiso)
 
-A simple library to help you format input text content
-
-Unlike its predecessor [cleave.js](https://github.com/nosir/cleave.js),
-`cleave-zen` no longer binds to DOM input elements. It now functions as a
-versatile formatting library, suitable for use in Node.js, browsers, and easier
-integration with frameworks like React, Angular, and any other libraries.
+A simple library to help you format input text content. Forked from [cleave-zen](https://github.com/nosir/cleave-zen) to add some features I needed myself, e.g. time/date range formatting.
 
 ## Features
 
 - Credit card formatting
 - Numeral formatting
 - Date / Time formatting
+- Date Range / Time Range formatting
 - Custom delimiter, prefix and blocks pattern
 - Non-intrusive: only providing the formatting methods
 
-**TL;DR** [Demo](https://nosir.github.io/cleave-zen) |
-[Usage Examples](https://github.com/nosir/cleave-zen-examples)
+**TL;DR** [Demo](https://nosir.github.io/cleave-meiso)
 
 ## Install
 
 ```sh
-npm install --save cleave-zen
+npm install --save cleave-meiso
 ```
 
-You can use it on [unpkg.com](https://unpkg.com/cleave-zen) as a CDN version
+You can use it on [unpkg.com](https://unpkg.com/cleave-meiso) as a CDN version
 
 ## Usage
 
@@ -44,7 +38,7 @@ You have two text fields to display credit card number and type
 Now in your JavaScript
 
 ```js
-import { formatCreditCard, getCreditCardType } from 'cleave-zen'
+import { formatCreditCard, getCreditCardType } from 'cleave-meiso'
 
 const creditcardInput = document.querySelector('.creditcard-input')
 const creditCardType = document.querySelector('.creditcard-type')
@@ -60,7 +54,7 @@ creditcardInput.addEventListener('input', e => {
 
 ```js
 import React, { useRef, useState } from 'react'
-import { formatCreditCard, getCreditCardType } from 'cleave-zen'
+import { formatCreditCard, getCreditCardType } from 'cleave-meiso'
 
 const App = () => {
   const inputRef = useRef(null)
@@ -90,7 +84,7 @@ const App = () => {
 This lib is written by TypeScript, so if you prefer to use it that way:
 
 ```js
-import { formatCreditCard, type FormatCreditCardOptions } from 'cleave-zen'
+import { formatCreditCard, type FormatCreditCardOptions } from 'cleave-meiso'
 
 const options: FormatCreditCardOptions = { delimiter: '-' }
 const value: string = formatCreditCard('5163000011112222', options)
@@ -106,7 +100,7 @@ This library can fix this issue for you! Simply add `registerCursorTracker` for
 the input field:
 
 ```js
-import { registerCursorTracker, DefaultCreditCardDelimiter } from 'cleave-zen'
+import { registerCursorTracker, DefaultCreditCardDelimiter } from 'cleave-meiso'
 
 registerCursorTracker({ input: creditCardInput, delimiter: DefaultCreditCardDelimiter }})
 ```
@@ -128,22 +122,7 @@ useEffect(() => {
 ...
 ```
 
-### All other examples
-
-See all examples in this [repo](https://github.com/nosir/cleave-zen-examples)
-
 ## Documentation
 
-- [API](https://github.com/nosir/cleave-zen/blob/main/docs/modules.md)
+- [API](https://github.com/nosir/cleave-meiso/blob/main/docs/modules.md)
 
-## TODO List
-
-- [x] Create an example repo for individual lib usage case
-- [ ] Create demo page for different type of formatting
-- [ ] Review still related PRs and issues in the old cleave.js repo and
-      implement it here
-- [ ] Add unit tests
-- [ ] Add docs comments for functions and usages
-- [ ] Add more library integration usages in
-      [example repo](https://github.com/nosir/cleave-zen-examples)
-- [ ] Create legacy cleave.js phone formatter in a separate repo
