@@ -14,7 +14,7 @@ A simple library to help you format input text content. Forked from [cleave-zen]
 - Custom delimiter, prefix and blocks pattern
 - Non-intrusive: only providing the formatting methods
 
-**TL;DR** [Demo](https://nosir.github.io/cleave-meiso)
+**TL;DR** [Demo](https://wyozi.github.io/cleave-meiso)
 
 ## Install
 
