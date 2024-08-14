@@ -10,9 +10,3 @@ export interface FormatGeneralOptions {
   uppercase?: boolean
   lowercase?: boolean
 }
-
-export interface GetPrefixStrippedValueProps {
-  value: string
-  prefix: string
-  tailPrefix: boolean
-}
