@@ -23544,6 +23544,22 @@
     });
     return value;
   };
+  var stripPrefix = ({
+    value,
+    prefix
+  }) => {
+    const prefixLength = prefix.length;
+    if (prefixLength === 0) {
+      return value;
+    }
+    if (value === prefix && value !== "") {
+      return "";
+    }
+    if (value.slice(0, prefixLength) !== prefix) {
+      return "";
+    }
+    return value.slice(prefixLength);
+  };
   var getFormattedValue = ({
     value,
     blocks,
@@ -23664,6 +23680,45 @@
       );
       cursorTrackerInput.CLEAVE_ZEN_cursor_tracker = void 0;
     };
+  };
+
+  // src/general/index.ts
+  var formatGeneral = (value, options) => {
+    const {
+      blocks,
+      delimiter = "",
+      delimiters = [],
+      delimiterLazyShow = false,
+      prefix = "",
+      numericOnly = false,
+      uppercase = false,
+      lowercase = false
+    } = options;
+    if (delimiter.length > 0) {
+      delimiters.push(delimiter);
+    }
+    value = stripDelimiters({
+      value,
+      delimiters
+    });
+    value = stripPrefix({
+      value,
+      prefix
+    });
+    value = numericOnly ? stripNonNumeric(value) : value;
+    value = uppercase ? value.toUpperCase() : value;
+    value = lowercase ? value.toLowerCase() : value;
+    if (prefix.length > 0) {
+      value = prefix + value;
+    }
+    value = getFormattedValue({
+      value,
+      blocks,
+      delimiter,
+      delimiters,
+      delimiterLazyShow
+    });
+    return value;
   };
 
   // src/credit-card/constants.ts
@@ -23828,11 +23883,16 @@
       delimiterLazyShow = false,
       delimiter = DefaultDateDelimiter,
       delimiters = [],
-      datePattern = DefaultDatePattern
+      datePattern = DefaultDatePattern,
+      prefix = ""
     } = options ?? {};
     if (delimiter.length > 0) {
       delimiters.push(delimiter);
     }
+    value = stripPrefix({
+      value,
+      prefix
+    });
     value = stripNonNumeric(value);
     const blocks = getBlocksByDatePattern(datePattern);
     value = getValidatedDate({
@@ -23852,6 +23912,9 @@
       delimiters,
       delimiterLazyShow
     });
+    if (prefix.length > 0) {
+      value = prefix + value;
+    }
     return value;
   };
 
@@ -23948,16 +24011,16 @@
   };
 
   // kitchensink/kitchensink.tsx
-  function useCleaveExample(placeholder, delimiters, callback) {
+  function useCleaveExample(placeholder, delimiters, callback, defaultValue) {
     const inputRef = React.useRef(null);
-    const [value, setValue] = React.useState("");
+    const [value, setValue] = React.useState(defaultValue || "");
     React.useEffect(() => {
       return registerCursorTracker({
         input: inputRef.current,
         delimiters
       });
     }, [delimiters]);
-    return /* @__PURE__ */ React.createElement(
+    return /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement(
       "input",
       {
         className: "border p-1",
@@ -23969,7 +24032,7 @@
           setValue(callback(value2));
         }
       }
-    );
+    ), /* @__PURE__ */ React.createElement("br", null), /* @__PURE__ */ React.createElement("code", null, "value: `", value, "`"));
   }
   function CreditCard() {
     const inputRef = React.useRef(null);
@@ -24128,15 +24191,63 @@
       ex
     );
   }
+  function Prefix() {
+    const ex = useCleaveExample(
+      "",
+      ["-"],
+      (value) => formatGeneral(value, {
+        prefix: "PREFIX",
+        blocks: [6, 4, 4, 4],
+        delimiter: "-"
+      }),
+      "PREFIX-"
+    );
+    return /* @__PURE__ */ React.createElement(
+      ExampleBlock,
+      {
+        title: "prefix",
+        code: `formatGeneral(value, {
+  prefix: 'PREFIX',
+  blocks: [6, 4, 4, 4],
+  delimiter: '-',
+})`
+      },
+      ex
+    );
+  }
+  function DateWithPrefix() {
+    const ex = useCleaveExample(
+      "",
+      ["."],
+      (value) => formatDate(value, {
+        delimiters: [".", "."],
+        datePattern: ["d", "m", "Y"],
+        prefix: "sent at "
+      }),
+      "sent at "
+    );
+    return /* @__PURE__ */ React.createElement(
+      ExampleBlock,
+      {
+        title: "date with prefix",
+        code: `formatDate(value, {
+  delimiters: ['.', '.'],
+  datePattern: ['d', 'm', 'Y'],
+  prefix: 'sent at ',
+})`
+      },
+      ex
+    );
+  }
   function ExampleBlock({
     title,
     code,
     children
   }) {
-    return /* @__PURE__ */ React.createElement("div", { className: "flex flex-col items-center justify-between p-4 border-2 border-black" }, /* @__PURE__ */ React.createElement("h2", { className: "font-semibold mb-4 text-lg" }, title), /* @__PURE__ */ React.createElement("div", null, children), /* @__PURE__ */ React.createElement("div", { className: "bg-black whitespace-pre text-white font-mono mt-8 rounded p-1" }, code));
+    return /* @__PURE__ */ React.createElement("div", { className: "flex flex-col items-center justify-between p-4 border-2 border-black" }, /* @__PURE__ */ React.createElement("h2", { className: "font-semibold mb-4 text-lg" }, title), /* @__PURE__ */ React.createElement("div", null, children), /* @__PURE__ */ React.createElement("div", { className: "bg-black whitespace-pre text-white font-mono mt-8 rounded p-1 text-sm" }, code));
   }
   function App() {
-    return /* @__PURE__ */ React.createElement("div", { className: "grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4" }, /* @__PURE__ */ React.createElement(CreditCard, null), /* @__PURE__ */ React.createElement(DateFormatting, null), /* @__PURE__ */ React.createElement(TimeFormatting, null), /* @__PURE__ */ React.createElement(TimeRange, null), /* @__PURE__ */ React.createElement(Duration, null), /* @__PURE__ */ React.createElement(DateRange, null));
+    return /* @__PURE__ */ React.createElement("div", { className: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4" }, /* @__PURE__ */ React.createElement(CreditCard, null), /* @__PURE__ */ React.createElement(DateFormatting, null), /* @__PURE__ */ React.createElement(TimeFormatting, null), /* @__PURE__ */ React.createElement(TimeRange, null), /* @__PURE__ */ React.createElement(Duration, null), /* @__PURE__ */ React.createElement(DateRange, null), /* @__PURE__ */ React.createElement(Prefix, null), /* @__PURE__ */ React.createElement(DateWithPrefix, null));
   }
   var domNode = document.getElementById("root");
   var root = (0, import_client.createRoot)(domNode);
