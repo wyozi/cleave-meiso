@@ -2,6 +2,7 @@ import type {
   BlocksType,
   DelimiterType,
   GetFormattedValueProps,
+  GetPrefixStrippedValueProps,
   StripDelimitersProps,
 } from './types'
 
@@ -42,6 +43,32 @@ export const stripDelimiters = ({
   })
 
   return value
+}
+
+// strip prefix
+export const stripPrefix = ({
+  value,
+  prefix,
+}: GetPrefixStrippedValueProps): string => {
+  const prefixLength: number = prefix.length
+
+  // No prefix
+  if (prefixLength === 0) {
+    return value
+  }
+
+  // Value is prefix
+  if (value === prefix && value !== '') {
+    return ''
+  }
+
+  // result prefix string does not match pre-defined prefix
+  if (value.slice(0, prefixLength) !== prefix) {
+    return ''
+  }
+
+  // No issue, strip prefix for new value
+  return value.slice(prefixLength)
 }
 
 export const getFormattedValue = ({

@@ -4,6 +4,7 @@ import {
   DefaultCreditCardDelimiter,
   formatCreditCard,
   formatDate,
+  formatGeneral,
   formatTime,
   getCreditCardType,
   registerCursorTracker,
@@ -12,10 +13,11 @@ import {
 function useCleaveExample(
   placeholder: string,
   delimiters: string[],
-  callback: (value: string) => string
+  callback: (value: string) => string,
+  defaultValue?: string
 ) {
   const inputRef = React.useRef(null)
-  const [value, setValue] = React.useState('')
+  const [value, setValue] = React.useState(defaultValue || '')
 
   React.useEffect(() => {
     return registerCursorTracker({
@@ -25,16 +27,20 @@ function useCleaveExample(
   }, [delimiters])
 
   return (
-    <input
-      className="border p-1"
-      ref={inputRef}
-      value={value}
-      placeholder={placeholder}
-      onChange={e => {
-        const value = e.target.value
-        setValue(callback(value))
-      }}
-    />
+    <>
+      <input
+        className="border p-1"
+        ref={inputRef}
+        value={value}
+        placeholder={placeholder}
+        onChange={e => {
+          const value = e.target.value
+          setValue(callback(value))
+        }}
+      />
+      <br />
+      <code>value: `{value}`</code>
+    </>
   )
 }
 
@@ -202,6 +208,60 @@ function DateRange() {
   )
 }
 
+function Prefix() {
+  const ex = useCleaveExample(
+    '',
+    ['-'],
+    value =>
+      formatGeneral(value, {
+        prefix: 'PREFIX',
+        blocks: [6, 4, 4, 4],
+        delimiter: '-',
+      }),
+    'PREFIX-'
+  )
+
+  return (
+    <ExampleBlock
+      title="prefix"
+      code={`formatGeneral(value, {
+  prefix: 'PREFIX',
+  blocks: [6, 4, 4, 4],
+  delimiter: '-',
+})`}
+    >
+      {ex}
+    </ExampleBlock>
+  )
+}
+
+function DateWithPrefix() {
+  const ex = useCleaveExample(
+    '',
+    ['.'],
+    value =>
+      formatDate(value, {
+        delimiters: ['.', '.'],
+        datePattern: ['d', 'm', 'Y'],
+        prefix: 'sent at ',
+      }),
+    'sent at '
+  )
+
+  return (
+    <ExampleBlock
+      title="date with prefix"
+      code={`formatDate(value, {
+  delimiters: ['.', '.'],
+  datePattern: ['d', 'm', 'Y'],
+  prefix: 'sent at ',
+})`}
+    >
+      {ex}
+    </ExampleBlock>
+  )
+}
+
 function ExampleBlock({
   title,
   code,
@@ -215,7 +275,7 @@ function ExampleBlock({
     <div className="flex flex-col items-center justify-between p-4 border-2 border-black">
       <h2 className="font-semibold mb-4 text-lg">{title}</h2>
       <div>{children}</div>
-      <div className="bg-black whitespace-pre text-white font-mono mt-8 rounded p-1">
+      <div className="bg-black whitespace-pre text-white font-mono mt-8 rounded p-1 text-sm">
         {code}
       </div>
     </div>
@@ -224,13 +284,15 @@ function ExampleBlock({
 
 function App() {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
       <CreditCard />
       <DateFormatting />
       <TimeFormatting />
       <TimeRange />
       <Duration />
       <DateRange />
+      <Prefix />
+      <DateWithPrefix />
     </div>
   )
 }

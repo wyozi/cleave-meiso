@@ -17,3 +17,8 @@ export interface GetFormattedValueProps {
   delimiters?: DelimiterType[]
   delimiterLazyShow?: boolean
 }
+
+export interface GetPrefixStrippedValueProps {
+  value: string
+  prefix: string
+}

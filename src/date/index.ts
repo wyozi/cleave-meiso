@@ -5,6 +5,7 @@ import {
   headStr,
   stripDelimiters,
   stripNonNumeric,
+  stripPrefix,
 } from '../common/utils'
 import { DefaultDateDelimiter, DefaultDatePattern } from './constants'
 import type {
@@ -79,10 +80,17 @@ export const formatDate = (
     delimiter = DefaultDateDelimiter,
     delimiters = [],
     datePattern = DefaultDatePattern,
+    prefix = '',
   } = options ?? {}
   if (delimiter.length > 0) {
     delimiters.push(delimiter)
   }
+
+  // strip prefix
+  value = stripPrefix({
+    value,
+    prefix,
+  })
 
   // strip non-numeric characters
   value = stripNonNumeric(value)
@@ -112,6 +120,11 @@ export const formatDate = (
     delimiters,
     delimiterLazyShow,
   })
+
+  // prevent from showing prefix when no immediate option enabled with empty input value
+  if (prefix.length > 0) {
+    value = prefix + value
+  }
 
   return value
 }

@@ -8,6 +8,7 @@ export interface FormatDateOptions {
   delimiter?: DelimiterType
   delimiters?: DelimiterType[]
   datePattern?: DatePatternType
+  prefix?: string
 }
 
 export interface DateCalculateOptions {

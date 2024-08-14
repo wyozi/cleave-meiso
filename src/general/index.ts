@@ -2,37 +2,9 @@ import {
   getFormattedValue,
   stripDelimiters,
   stripNonNumeric,
+  stripPrefix,
 } from '../common/utils'
-import type { FormatGeneralOptions, GetPrefixStrippedValueProps } from './types'
-
-// strip prefix
-const stripPrefix = ({
-  value,
-  prefix,
-  tailPrefix,
-}: GetPrefixStrippedValueProps): string => {
-  const prefixLength: number = prefix.length
-
-  // No prefix
-  if (prefixLength === 0) {
-    return value
-  }
-
-  // Value is prefix
-  if (value === prefix && value !== '') {
-    return ''
-  }
-
-  // result prefix string does not match pre-defined prefix
-  if (value.slice(0, prefixLength) !== prefix && !tailPrefix) {
-    return ''
-  } else if (value.slice(-prefixLength) !== prefix && tailPrefix) {
-    return ''
-  }
-
-  // No issue, strip prefix for new value
-  return tailPrefix ? value.slice(0, -prefixLength) : value.slice(prefixLength)
-}
+import type { FormatGeneralOptions } from './types'
 
 export const formatGeneral = (
   value: string,
@@ -49,8 +21,6 @@ export const formatGeneral = (
     lowercase = false,
   } = options
 
-  const tailPrefix: boolean = false // This is too buggy to be true
-
   if (delimiter.length > 0) {
     delimiters.push(delimiter)
   }
@@ -65,7 +35,6 @@ export const formatGeneral = (
   value = stripPrefix({
     value,
     prefix,
-    tailPrefix,
   })
 
   // strip non-numeric characters
@@ -77,11 +46,7 @@ export const formatGeneral = (
 
   // prevent from showing prefix when no immediate option enabled with empty input value
   if (prefix.length > 0) {
-    if (tailPrefix) {
-      value = value + prefix
-    } else {
-      value = prefix + value
-    }
+    value = prefix + value
   }
 
   // apply blocks
